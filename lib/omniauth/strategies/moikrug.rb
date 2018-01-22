@@ -6,7 +6,7 @@ module OmniAuth
       option :name, "moikrug"
 
       option :client_options, {
-        site: 'https://moikrug.ru/integrations/oauth',
+        site: 'https://api.moikrug.ru/v1/integrations',
         authorize_url: 'https://moikrug.ru/integrations/oauth/authorize',
         token_url: 'https://moikrug.ru/integrations/oauth/token'
       }
@@ -26,8 +26,12 @@ module OmniAuth
 
       info do
         {
-          :name => raw_info['name'],
-          :email => raw_info['email']
+          first_name:   raw_info['first_name'],
+          last_name:    raw_info['last_name'],
+          middle_name:  raw_info['middle_name'],
+          email:        raw_info['email'],
+          avatar:       raw_info['avatar'],
+          birthday:     raw_info['birthday']
         }
       end
 
@@ -38,7 +42,7 @@ module OmniAuth
       end
 
       def raw_info
-        @raw_info ||= access_token.get(' /v1/integrations/users/me').parsed
+        @raw_info ||= access_token.get('users/me').parsed
       end
 
       def callback_url
