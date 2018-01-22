@@ -5,7 +5,6 @@ module OmniAuth
     class MoiKrug < OmniAuth::Strategies::OAuth2
       option :name, "moikrug"
 
-
       option :client_options, {
         site: 'https://moikrug.ru/integrations/oauth',
         authorize_url: 'https://moikrug.ru/integrations/oauth/authorize',
@@ -46,8 +45,10 @@ module OmniAuth
       # The new /user/emails API - http://developer.github.com/v3/users/emails/#future-response
       def emails
         return [] unless email_access_allowed?
+
+        p access_token
         access_token.options[:mode] = :query
-        @emails ||= access_token.get('user/emails', :headers => { 'Accept' => 'application/vnd.github.v3' }).parsed
+        #@emails ||= access_token.get('user/emails', :headers => { 'Accept' => 'application/vnd.github.v3' }).parsed
       end
 
       def email_access_allowed?
