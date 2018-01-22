@@ -11,11 +11,18 @@ module OmniAuth
         token_url: 'https://moikrug.ru/integrations/oauth/token'
       }
 
+
+
       def request_phase
         super
       end
 
-      uid { raw_info['id'].to_s }
+      # These are called after authentication has succeeded. If
+      # possible, you should try to set the UID without making
+      # additional calls (if the user id is returned with the token
+      # or as a URI parameter). This may not be possible with all
+      # providers.
+      uid{ raw_info['id'] }
 
       info do
         {
@@ -25,37 +32,13 @@ module OmniAuth
       end
 
       extra do
-        {:raw_info => raw_info, :all_emails => emails}
+        {
+          'raw_info' => raw_info
+        }
       end
 
       def raw_info
-        access_token.options[:mode] = :query
-        @raw_info ||= access_token.get('user').parsed
-      end
-
-      def email
-        (email_access_allowed?) ? primary_email : raw_info['email']
-      end
-
-      def primary_email
-        primary = emails.find{ |i| i['primary'] && i['verified'] }
-        primary && primary['email'] || nil
-      end
-
-      # The new /user/emails API - http://developer.github.com/v3/users/emails/#future-response
-      def emails
-        return [] unless email_access_allowed?
-
-        p access_token
-        access_token.options[:mode] = :query
-        #@emails ||= access_token.get('user/emails', :headers => { 'Accept' => 'application/vnd.github.v3' }).parsed
-      end
-
-      def email_access_allowed?
-        return false unless options['scope']
-        email_scopes = ['user', 'user:email']
-        scopes = options['scope'].split(',')
-        (scopes & email_scopes).any?
+        @raw_info ||= access_token.get(' /v1/integrations/users/me').parsed
       end
 
       def callback_url
