@@ -12,7 +12,7 @@ Now sign in into the MoiKrug account  and create an application here - https://m
 First start by adding this gem to your Gemfile:
 
 ```
-gem 'omniauth-twitter', :github => 'moxorama/omniauth-moikrug'
+gem 'omniauth-moikrug', :github => 'moxorama/omniauth-moikrug'
 ```
 
 
