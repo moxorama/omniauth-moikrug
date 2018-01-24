@@ -22,7 +22,7 @@ module OmniAuth
       # additional calls (if the user id is returned with the token
       # or as a URI parameter). This may not be possible with all
       # providers.
-      uid{ raw_info['id'] }
+      uid{ raw_info['login'] }
 
       info do
         {
@@ -30,7 +30,7 @@ module OmniAuth
           last_name:    raw_info['last_name'],
           middle_name:  raw_info['middle_name'],
           email:        raw_info['email'],
-          avatar:       raw_info['avatar'],
+          image:        raw_info['avatar'],
           birthday:     raw_info['birthday']
         }
       end
